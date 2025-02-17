@@ -8,6 +8,7 @@ const ParentSidebar = ({ setViewProfile }) => {
       <div style={linkStyle}>
         <Link to="#" onClick={() => setViewProfile(true)} style={linkItemStyle}>👤 View Profile</Link>
         <Link to="/add-child" style={linkItemStyle}>➕ Add Child</Link>
+        <Link to="/view-child" style={linkItemStyle}>👶 View Child</Link>
       </div>
     </div>
   );
