@@ -9,7 +9,7 @@ const Sidebar = () => {
             <nav>
                 <ul>
                     <li>
-                        <NavLink to="/" activeClassName="active">Add Vaccine</NavLink> 
+                        <NavLink to="/addsupplement" activeClassName="active">Add Supplement</NavLink> 
                     </li>
                     {/* <li>
                         <NavLink to="viewcategory" activeClassName="active">View Ride Category</NavLink> 
