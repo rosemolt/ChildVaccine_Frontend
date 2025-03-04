@@ -137,7 +137,7 @@ const AddChild = () => {
                     >
                         ➕ Add Child
                     </motion.button>
-                    <Link to="/parentdashboard" className="absolute bottom-6 left-6">
+                    {/* <Link to="/parentdashboard" className="absolute bottom-6 left-6">
                 <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -145,7 +145,7 @@ const AddChild = () => {
                 >
                     <FaArrowLeft /> Back to Home
                 </motion.button>
-            </Link>
+            </Link> */}
                 </form>
             </motion.div>
 

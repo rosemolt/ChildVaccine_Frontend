@@ -1,239 +1,213 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Navbar from "./Navbar";
-import ParentHome from "./ParentHome";
-import ParentSidebar from "./ParentSidebar";
+import React, { useState } from "react";
+import { FaClipboardList, FaPlusCircle, FaUsers, FaSignOutAlt, FaBars, FaUser, FaUserCircle, FaCalendarCheck } from "react-icons/fa";
+import ParentProfile from "./ParentProfile";
+import AddChild from "./AddChild";
+import ViewChildren from "./ViewChildren";
+import Home from "./Home";
+import ParentSchedules from "./ParentSchedules";
+import ParentBookings from "./ParentBookings";
 
 const ParentDashboard = () => {
-    const [parent, setParent] = useState(null);
-    const [editing, setEditing] = useState(false);
-    const [formData, setFormData] = useState({ name: "", address: "", phoneno: "", email: "" });
-    const [loading, setLoading] = useState(true);
-    const [viewProfile, setViewProfile] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState("welcome");
 
-    useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get("http://localhost:8080/viewParentProfile", {
-                    headers: { token }
-                });
-                setParent(response.data.parent);
-                setFormData(response.data.parent);
-                setLoading(false);
-            } catch (error) {
-                console.error("Error fetching profile:", error.response?.data || error.message);
-                setLoading(false);
-            }
-        };
-
-        fetchProfile();
-    }, []);
-
-    const handleEdit = () => {
-        setEditing(true);
-    };
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSave = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            await axios.put("http://localhost:8080/updateParentProfile", formData, {
-                headers: { token }
-            });
-            setParent(formData);
-            setEditing(false);
-            alert("Profile updated successfully!");
-        } catch (error) {
-            console.error("Error updating profile:", error.response?.data || error.message);
+    const renderContent = () => {
+        switch (selectedOption) {
+            case "/":
+                return <Home />;
+            case "profile":
+                return <ParentProfile />;
+            case "add-child":
+                return <AddChild />;
+            case "view-child":
+                return <ViewChildren />;
+            case "booking":
+                return <ParentSchedules />;
+            case "view-booking":
+                return <ParentBookings />;
+            default:
+                return <Home />;
         }
     };
 
-    const onLogout = () => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
+    const handleLogout = () => {
+        console.log("Logging out...");
+        window.location.href = "/"; // Redirect to login/home page
     };
 
-    if (loading) return <p>Loading...</p>;
-
     return (
-        <div style={dashboardContainerStyle}>
-            <ParentSidebar setViewProfile={setViewProfile} />  {/* Pass setViewProfile here */}
-            <div style={dashboardContentStyle}>
-                <Navbar parent={parent} onLogout={onLogout} />
-
-                {!viewProfile ? (
+        <div className="dashboard-container">
+            {/* Sidebar */}
+            <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
+                {sidebarOpen && (
                     <>
-                        <ParentHome />
+                        <h2 className="sidebar-title">Parent Dashboard</h2>
+                        <ul className="sidebar-menu">
+                            <li>
+                                <button onClick={() => setSelectedOption("/")} className="sidebar-link">
+                                    <FaUser /> <span>Home</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => setSelectedOption("profile")} className="sidebar-link">
+                                    <FaUserCircle /> <span>Profile</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => setSelectedOption("add-child")} className="sidebar-link">
+                                    <FaPlusCircle /> <span>Add Child</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => setSelectedOption("view-child")} className="sidebar-link">
+                                    <FaClipboardList /> <span>View Child</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => setSelectedOption("booking")} className="sidebar-link">
+                                    <FaCalendarCheck /> <span>Booking</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button onClick={() => setSelectedOption("view-booking")} className="sidebar-link">
+                                    <FaClipboardList /> <span>Your Bookings</span>
+                                </button>
+                            </li>
+                        </ul>
+                        <button onClick={handleLogout} className="logout-btn">
+                            <FaSignOutAlt /> <span>Logout</span>
+                        </button>
                     </>
-                ) : (
-                    <div style={profileContainerStyle}>
-                        <h2 style={profileHeadingStyle}>Parent Profile</h2>
-                        <div style={profileCardStyle}>
-                            {editing ? (
-                                <div style={formContainerStyle}>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                        className="form-control mb-2"
-                                        style={inputStyle}
-                                    />
-                                    <input
-                                        type="text"
-                                        name="address"
-                                        value={formData.address}
-                                        onChange={handleChange}
-                                        className="form-control mb-2"
-                                        style={inputStyle}
-                                    />
-                                    <input
-                                        type="text"
-                                        name="phoneno"
-                                        value={formData.phoneno}
-                                        onChange={handleChange}
-                                        className="form-control mb-2"
-                                        style={inputStyle}
-                                    />
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        className="form-control mb-2"
-                                        style={inputStyle}
-                                    />
-                                    <div style={buttonContainerStyle}>
-                                        <button className="btn btn-success" onClick={handleSave} style={saveButtonStyle}>
-                                            Save
-                                        </button>
-                                        <button className="btn btn-secondary ms-2" onClick={() => setEditing(false)} style={cancelButtonStyle}>
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <div>
-                                    <p><strong>Name:</strong> {parent.name}</p>
-                                    <p><strong>Address:</strong> {parent.address}</p>
-                                    <p><strong>Phone:</strong> {parent.phoneno}</p>
-                                    <p><strong>Email:</strong> {parent.email}</p>
-                                    <div style={buttonContainerStyle}>
-                                        <button className="btn btn-warning" onClick={handleEdit} style={editButtonStyle}>
-                                            Edit Profile
-                                        </button>
-                                        <button className="btn btn-secondary ms-2" onClick={() => setViewProfile(false)} style={backButtonStyle}>
-                                            Back to Home
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
                 )}
             </div>
+
+            {/* Main Content Area */}
+            <div className={`main-content ${sidebarOpen ? "with-sidebar" : "full-width"}`}>
+                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="toggle-btn">
+                    <FaBars />
+                </button>
+                <div className="content-box">
+                    {renderContent()}
+                </div>
+            </div>
+
+            <style jsx>{`
+            .dashboard-container {
+                display: flex;
+                height: 100vh;
+                background-color: #f0f8ff;
+            }
+
+            .sidebar {
+                background-color: #6A4C93;
+                color: white;
+                width: 250px;
+                padding: 20px;
+                transition: transform 0.3s ease-in-out;
+                // overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                transform: translateX(0);
+            }
+
+            .sidebar.closed {
+                width: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            .sidebar-title {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .sidebar-menu {
+                list-style: none;
+                padding: 0;
+                flex-grow: 1;
+            }
+
+            .sidebar-menu li {
+                margin: 15px 0;
+            }
+
+            .sidebar-link {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: white;
+                text-decoration: none;
+                padding: 10px;
+                border: none;
+                background: none;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background 0.3s;
+                font-size: 16px;
+                width: 100%;
+                text-align: left;
+            }
+
+            .sidebar-link:hover {
+                background-color: #8B5FBF;
+            }
+
+            .logout-btn {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px;
+                background-color: #B91C1C;
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background 0.3s;
+                width: 100%;
+                border: none;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            .logout-btn:hover {
+                background-color: #8B0000;
+            }
+
+            .main-content {
+                flex: 1;
+                padding: 20px;
+                position: relative;
+                transition: width 0.3s ease-in-out;
+            }
+
+            .main-content.full-width {
+                width: 100%;
+            }
+
+            .toggle-btn {
+                background-color: #8B5FBF;
+                color: white;
+                border: none;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                z-index: 10;
+            }
+
+            .content-box {
+                background-color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                min-height: 200px;
+            }
+            `}</style>
         </div>
     );
-};
-
-// Styles
-const dashboardContainerStyle = {
-    display: "flex",
-    backgroundColor: "#f8f9fa",
-    height: "100vh",
-};
-
-const dashboardContentStyle = {
-    marginLeft: "250px",
-    padding: "30px",
-    flexGrow: 1,
-    backgroundColor: "#ffffff",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const profileContainerStyle = {
-    padding: "20px",
-    textAlign: "center",
-};
-
-const profileHeadingStyle = {
-    fontSize: "2rem",
-    color: "#00796b",
-    marginBottom: "20px",
-};
-
-const profileCardStyle = {
-    backgroundColor: "#f1f8e9",
-    borderRadius: "10px",
-    padding: "20px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const formContainerStyle = {
-    maxWidth: "500px",
-    margin: "0 auto",
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    borderRadius: "8px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-};
-
-const inputStyle = {
-    padding: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ddd",
-    marginBottom: "10px",
-    width: "100%",
-    boxSizing: "border-box",
-};
-
-const buttonContainerStyle = {
-    marginTop: "20px",
-};
-
-const saveButtonStyle = {
-    backgroundColor: "#4caf50",
-    color: "#fff",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-};
-
-const cancelButtonStyle = {
-    backgroundColor: "#f44336",
-    color: "#fff",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-};
-
-const editButtonStyle = {
-    backgroundColor: "#ff9800",
-    color: "#fff",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
-};
-
-const backButtonStyle = {
-    backgroundColor: "#607d8b",
-    color: "#fff",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    transition: "background-color 0.3s",
 };
 
 export default ParentDashboard;

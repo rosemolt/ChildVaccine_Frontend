@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Card, Row, Col, Spinner, Alert } from 'react-bootstrap'; // Assuming you're using react-bootstrap for UI components
+import { Container, Card, Row, Col, Spinner, Alert, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const ViewChildren = () => {
     const [children, setChildren] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
-    // Assuming the parent token is stored in localStorage
     const token = localStorage.getItem('token');
 
     useEffect(() => {
@@ -26,16 +27,18 @@ const ViewChildren = () => {
                 headers: { token: token },
             });
             setChildren(response.data.children);
-            setLoading(false);
         } catch (err) {
             console.error('Error fetching children:', err);
             setError('Error fetching children details');
-            setLoading(false);
         }
+        setLoading(false);
     };
 
     return (
         <Container className="mt-4">
+            {/* <Button variant="secondary" onClick={() => navigate('/parentdashboard')} className="mb-3">
+                ⬅ Back to Dashboard
+            </Button> */}
             <h2 className="mb-4">Your Children Details</h2>
             
             {error && <Alert variant="danger">{error}</Alert>}

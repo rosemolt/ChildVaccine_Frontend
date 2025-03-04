@@ -11,6 +11,12 @@ import AddChild from './components/AddChild';
 import ViewChildren from './components/ViewChildren';
 import DoctorDashboard from './components/DoctorDashboard';
 import AddSupplement from './components/AddSupplement';
+import AdminSupplement from './components/AdminSupplement';
+import ParentProfile from './components/ParentProfile';
+import ScheduleForm from './components/ScheduleForm';
+import ParentSchedules from './components/ParentSchedules';
+import ParentBookings from './components/ParentBookings';
+
 
 function App() {
   return (
@@ -27,6 +33,11 @@ function App() {
         <Route path="/view-child" element={<ViewChildren />} />
         <Route path="/doctordashboard" element={<DoctorDashboard />} />
         <Route path="/addsupplement" element={<AddSupplement />} />
+        <Route path="/adminsupplement" element={<AdminSupplement />} />
+        <Route path="/profile" element={<ParentProfile />} />
+        <Route path="/schedule" element={<ScheduleForm />} />
+        <Route path="/booking" element={<ParentSchedules />} />
+        <Route path="/view-booking" element={<ParentBookings />} />
       </Routes>
     </BrowserRouter>
   );

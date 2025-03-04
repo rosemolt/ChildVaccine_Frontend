@@ -11,13 +11,10 @@ const Sidebar = () => {
                     <li>
                         <NavLink to="/addsupplement" activeClassName="active">Add Supplement</NavLink> 
                     </li>
+                    <li>
+                        <NavLink to="/adminsupplement" activeClassName="active">View Supplement</NavLink> 
+                    </li>
                     {/* <li>
-                        <NavLink to="viewcategory" activeClassName="active">View Ride Category</NavLink> 
-                    </li>
-                    <li>
-                        <NavLink to="addride" activeClassName="active">Add Rides</NavLink> 
-                    </li>
-                    <li>
                         <NavLink to="viewride" activeClassName="active">View Rides</NavLink> 
                     </li>
                     <li>

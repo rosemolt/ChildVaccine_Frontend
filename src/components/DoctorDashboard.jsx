@@ -68,7 +68,8 @@ const DoctorDashboard = () => {
             }
 
             .sidebar.closed {
-                width: 60px;
+                width: 0;
+                padding: 0;
                 overflow: hidden;
             }
 

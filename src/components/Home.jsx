@@ -15,7 +15,7 @@ const Home = () => {
               src="https://imgix.bustle.com/2016/8/1/Fotolia_70350869_Subscription_Monthly_M-c85939cc-13c0-494d-930a-416b1d668e56.jpg?w=1200&h=675&fit=crop&crop=faces&fm=jpg"
               className="d-block w-100 img-fluid"
               alt="Slide 1"
-              style={{ height: "500px", objectFit: "cover" }}
+              style={{ height: "560px", objectFit: "cover" }}
             />
             <div className="carousel-caption p-3 d-block">
               <div className="d-flex flex-column align-items-center">
@@ -23,7 +23,7 @@ const Home = () => {
                 <p className="text-dark p-2 d-inline-block rounded">
                   Ensuring a healthy future for your child with timely vaccinations.
                 </p>
-                <button className="btn btn-primary mt-2">Schedule</button>
+                <button className="btn btn-primary mt-2">Book</button>
               </div>
             </div>
           </div>
@@ -32,7 +32,7 @@ const Home = () => {
               src="https://content.api.news/v3/images/bin/1c4af4adf0a6ed79175f9f0f591fee2a"
               className="d-block w-100 img-fluid"
               alt="Slide 2"
-              style={{ height: "500px", objectFit: "cover" }}
+              style={{ height: "560px", objectFit: "cover" }}
             />
             <div className="carousel-caption p-3 d-block">
               <div className="d-flex flex-column align-items-center">
@@ -49,7 +49,7 @@ const Home = () => {
               src="https://cdn.pfizer.com/pfizercom/styles/convert_to_webp/s3/immunization-schedules.png.webp?VersionId=J56WCBykFHF_HJs7t2e41hiIV0ebY8G_&itok=cIXLuQvD"
               className="d-block w-100 img-fluid"
               alt="Slide 3"
-              style={{ height: "500px", objectFit: "cover" }}
+              style={{ height: "560px", objectFit: "cover" }}
             />
             <div className="carousel-caption p-3 d-block">
               <div className="d-flex flex-column align-items-center">
