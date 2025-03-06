@@ -1,9 +1,20 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { FaStethoscope, FaFileMedical, FaClipboardList, FaFilePrescription, FaSignOutAlt, FaBars } from "react-icons/fa";
+import { FaClipboardList, FaPlusCircle, FaUsers, FaSignOutAlt, FaBars } from "react-icons/fa";
+import DoctorBookings from "./DoctorBookings";
 
 const DoctorDashboard = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [selectedOption, setSelectedOption] = useState("welcome");
+
+    const renderContent = () => {
+        switch (selectedOption) {
+            case "bookedchild":
+                return <DoctorBookings />;
+            
+            default:
+                return <h2>Welcome Back, Doctor! <br /> Select an option from the sidebar to proceed.</h2>;
+        }
+    };
 
     return (
         <div className="dashboard-container">
@@ -12,29 +23,14 @@ const DoctorDashboard = () => {
                 <h2 className="sidebar-title">Doctor Dashboard</h2>
                 <ul className="sidebar-menu">
                     <li>
-                        <Link to="/view-children" className="sidebar-link">
-                            <FaClipboardList /> View Child Details
-                        </Link>
-                    </li>
-                    {/* <li>
-                        <Link to="/check-polio" className="sidebar-link">
-                            <FaStethoscope /> Check Polio Condition
-                        </Link>
-                    </li> */}
-                    <li>
-                        <Link to="/update-vaccination" className="sidebar-link">
-                            <FaFileMedical /> Update Vaccination Status
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/update-certificate" className="sidebar-link">
-                            <FaFilePrescription /> Update & Send Certificates
-                        </Link>
+                        <button onClick={() => setSelectedOption("bookedchild")} className="sidebar-link">
+                            <FaClipboardList /> Booked Child
+                        </button>
                     </li>
                 </ul>
-                <Link to="/" className="logout-btn">
+                <a href="/" className="logout-btn">
                     <FaSignOutAlt /> Logout
-                </Link>
+                </a>
             </div>
 
             {/* Main Content Area */}
@@ -46,21 +42,19 @@ const DoctorDashboard = () => {
 
                 {/* Page Content */}
                 <div className="content-box">
-                    <h2>Welcome to the Doctor Dashboard</h2>
-                    <p>Select an option from the sidebar to proceed.</p>
+                    {renderContent()}
                 </div>
             </div>
+            `
             <style jsx>{`
-            /* Main Container */
             .dashboard-container {
                 display: flex;
                 height: 100vh;
-                background-color: #f4f4f4;
+                background-color: #f0f8ff;
             }
 
-            /* Sidebar Styles */
             .sidebar {
-                background-color: #1e3a8a;
+                background-color: #1E3A8A;
                 color: white;
                 width: 250px;
                 padding: 20px;
@@ -96,22 +90,27 @@ const DoctorDashboard = () => {
                 color: white;
                 text-decoration: none;
                 padding: 10px;
+                border: none;
+                background: none;
+                cursor: pointer;
                 border-radius: 5px;
                 transition: background 0.3s;
+                font-size: 16px;
+                width: 100%;
+                text-align: left;
             }
 
             .sidebar-link:hover {
-                background-color: #2563eb;
+                background-color: #2563EB;
             }
 
-            /* Logout Button */
             .logout-btn {
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 margin-top: 20px;
                 padding: 10px;
-                background-color: #dc2626;
+                background-color: #b91c1c;
                 color: white;
                 text-decoration: none;
                 border-radius: 5px;
@@ -119,19 +118,17 @@ const DoctorDashboard = () => {
             }
 
             .logout-btn:hover {
-                background-color: #b91c1c;
+                background-color: #8b0000;
             }
 
-            /* Main Content */
             .main-content {
                 flex: 1;
                 padding: 20px;
                 position: relative;
             }
 
-            /* Sidebar Toggle Button */
             .toggle-btn {
-                background-color: #2563eb;
+                background-color: #1E3A8A;
                 color: white;
                 border: none;
                 padding: 10px;
@@ -142,14 +139,18 @@ const DoctorDashboard = () => {
                 left: 10px;
             }
 
-            /* Content Box */
+            .toggle-btn:hover {
+                background-color: #2563EB;
+            }
+
             .content-box {
                 background-color: white;
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-      `}</style>
+                min-height: 200px;
+            
+            `}</style>
         </div>
     );
 };

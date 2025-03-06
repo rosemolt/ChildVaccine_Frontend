@@ -16,6 +16,8 @@ import ParentProfile from './components/ParentProfile';
 import ScheduleForm from './components/ScheduleForm';
 import ParentSchedules from './components/ParentSchedules';
 import ParentBookings from './components/ParentBookings';
+import BookedParents from './components/BookedParents';
+import DoctorBookings from './components/DoctorBookings';
 
 
 function App() {
@@ -38,6 +40,8 @@ function App() {
         <Route path="/schedule" element={<ScheduleForm />} />
         <Route path="/booking" element={<ParentSchedules />} />
         <Route path="/view-booking" element={<ParentBookings />} />
+        <Route path="/bookedParents" element={<BookedParents />} />
+        <Route path="/bookedchild" element={<DoctorBookings />} />
       </Routes>
     </BrowserRouter>
   );

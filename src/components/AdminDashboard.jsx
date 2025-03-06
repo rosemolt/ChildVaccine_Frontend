@@ -3,6 +3,7 @@ import { FaClipboardList, FaPlusCircle, FaUsers, FaSignOutAlt, FaBars } from "re
 import AddSupplement from "./AddSupplement";
 import AdminSupplement from "./AdminSupplement";
 import ScheduleForm from "./ScheduleForm";
+import BookedParents from "./BookedParents";
 
 
 const AdminDashboard = () => {
@@ -17,6 +18,8 @@ const AdminDashboard = () => {
                 return <AdminSupplement/>;
             case "schedule":
                 return <ScheduleForm />;
+            case "bookedParents":
+                return <BookedParents />;
             default:
                 return <h2>Welcome Back, Admin! <br /> Select an option from the sidebar to proceed.</h2>;
         }
@@ -41,6 +44,11 @@ const AdminDashboard = () => {
                     <li>
                         <button onClick={() => setSelectedOption("schedule")} className="sidebar-link">
                             <FaUsers /> Schedule
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => setSelectedOption("bookedParents")} className="sidebar-link">
+                            <FaClipboardList /> Booked Parents
                         </button>
                     </li>
                 </ul>
