@@ -12,7 +12,7 @@ const Navbar = ({ parent, onLogout }) => {
 
         {/* Navigation Links */}
         <div className="nav-links">
-          <Link to="/" className="nav-item">Home</Link> {/* Home link does not trigger logout */}
+          {/* <Link to="/" className="nav-item">Home</Link> Home link does not trigger logout */}
 
           {!parent && <Link to="/login" className="nav-item">Login</Link>}
 

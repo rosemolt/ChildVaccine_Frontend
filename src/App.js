@@ -18,6 +18,7 @@ import ParentSchedules from './components/ParentSchedules';
 import ParentBookings from './components/ParentBookings';
 import BookedParents from './components/BookedParents';
 import DoctorBookings from './components/DoctorBookings';
+import PendingSupplements from './components/PendingSupplements';
 
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/view-booking" element={<ParentBookings />} />
         <Route path="/bookedParents" element={<BookedParents />} />
         <Route path="/bookedchild" element={<DoctorBookings />} />
+        <Route path="/pendingchild" element={<PendingSupplements />} />
       </Routes>
     </BrowserRouter>
   );

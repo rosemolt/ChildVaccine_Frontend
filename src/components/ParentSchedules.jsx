@@ -1,35 +1,49 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const ParentSchedule = () => {
+const ParentSchedules = () => {
     const [schedules, setSchedules] = useState([]);
+    const [bookedSchedules, setBookedSchedules] = useState(new Set());
     const [loading, setLoading] = useState(null);
     const [message, setMessage] = useState(null);
-    const [bookedSchedules, setBookedSchedules] = useState(new Set());
 
     useEffect(() => {
-        const fetchSchedules = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get("http://localhost:8080/parent/schedule", {
-                    headers: { token }
-                });
-
-                // Get current date in YYYY-MM-DD format
-                const currentDate = new Date().toISOString().split("T")[0];
-
-                // Filter out schedules where the date has already passed
-                const upcomingSchedules = response.data.schedules.filter(schedule => schedule.date >= currentDate);
-
-                setSchedules(upcomingSchedules);
-            } catch (error) {
-                console.error("Error fetching schedules:", error);
-                setMessage("Failed to fetch schedules.");
-            }
-        };
-
         fetchSchedules();
+        fetchBookedSchedules();
     }, []);
+
+    // Fetch all available schedules
+    const fetchSchedules = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get("http://localhost:8080/parent/schedule", {
+                headers: { token }
+            });
+
+            const currentDate = new Date().toISOString().split("T")[0];
+
+            const upcomingSchedules = response.data.schedules.filter(schedule => schedule.date >= currentDate);
+            setSchedules(upcomingSchedules);
+        } catch (error) {
+            console.error("Error fetching schedules:", error);
+            setMessage("Failed to fetch schedules.");
+        }
+    };
+
+    // Fetch schedules that the parent has already booked
+    const fetchBookedSchedules = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get("http://localhost:8080/parent/booked-schedules", {
+                headers: { token }
+            });
+
+            const bookedSet = new Set(response.data.bookedSchedules.map(schedule => schedule.scheduleid));
+            setBookedSchedules(bookedSet);
+        } catch (error) {
+            console.error("Error fetching booked schedules:", error);
+        }
+    };
 
     const handleBook = async (scheduleid) => {
         setLoading(scheduleid);
@@ -41,25 +55,35 @@ const ParentSchedule = () => {
                 { scheduleid },
                 { headers: { token } }
             );
+
             setMessage(response.data.status);
-            setBookedSchedules((prev) => new Set([...prev, scheduleid]));
+            setBookedSchedules((prev) => new Set([...prev, scheduleid])); // Update booked schedules
         } catch (error) {
             setMessage(error.response?.data?.status || "Booking failed.");
         }
         setLoading(null);
     };
 
+    // Group schedules by scheduleid
+    const groupedSchedules = schedules.reduce((acc, schedule) => {
+        if (!acc[schedule.scheduleid]) {
+            acc[schedule.scheduleid] = [];
+        }
+        acc[schedule.scheduleid].push(schedule);
+        return acc;
+    }, {});
+
     return (
         <div className="container">
             <h2>Available Schedules</h2>
             {message && <p className="message">{message}</p>}
-            {schedules.length === 0 ? (
+            {Object.keys(groupedSchedules).length === 0 ? (
                 <p>No upcoming schedules available.</p>
             ) : (
                 <table className="schedule-table">
                     <thead>
                         <tr>
-                            <th>Child Name</th>
+                            <th>Child Name(s)</th>
                             <th>Supplement Type</th>
                             <th>Supplement Name</th>
                             <th>Description</th>
@@ -70,30 +94,34 @@ const ParentSchedule = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {schedules.map((schedule) => (
-                            <tr key={schedule.scheduleid}>
-                                <td>{schedule.childName}</td>
-                                <td>{schedule.supplementType}</td>
-                                <td>{schedule.supplementName}</td>
-                                <td>{schedule.description}</td>
-                                <td>{schedule.date}</td>
-                                <td>{schedule.time}</td>
-                                <td>{schedule.location}</td>
-                                <td>
-                                    {bookedSchedules.has(schedule.scheduleid) ? (
+                        {Object.values(groupedSchedules).map((scheduleGroup) => {
+                            const firstSchedule = scheduleGroup[0]; // First entry in the group
+                            return (
+                                <tr key={firstSchedule.scheduleid}>
+                                    <td>{scheduleGroup.map(s => s.childName).join(", ")}</td>
+                                    <td>{firstSchedule.supplementType}</td>
+                                    <td>{firstSchedule.supplementName}</td>
+                                    <td>{firstSchedule.description}</td>
+                                    <td>{firstSchedule.date}</td>
+                                    <td>{firstSchedule.time}</td>
+                                    <td>{firstSchedule.location}</td>
+                                    <td>
+                                    {bookedSchedules.has(firstSchedule.scheduleid) ? (
                                         <button className="booked-btn" disabled>Booked</button>
                                     ) : (
                                         <button 
-                                            onClick={() => handleBook(schedule.scheduleid)} 
-                                            disabled={loading === schedule.scheduleid}
+                                            onClick={() => handleBook(firstSchedule.scheduleid)} 
+                                            disabled={loading === firstSchedule.scheduleid || new Date(`${firstSchedule.date}T${firstSchedule.time}`) < new Date()}
                                             className="book-btn"
                                         >
-                                            {loading === schedule.scheduleid ? "Booking..." : "Book"}
+                                            {loading === firstSchedule.scheduleid ? "Booking..." : "Book"}
                                         </button>
                                     )}
                                 </td>
-                            </tr>
-                        ))}
+
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             )}
@@ -152,4 +180,4 @@ const ParentSchedule = () => {
     );
 };
 
-export default ParentSchedule;
+export default ParentSchedules;

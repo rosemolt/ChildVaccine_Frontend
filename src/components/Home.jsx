@@ -23,7 +23,7 @@ const Home = () => {
                 <p className="text-dark p-2 d-inline-block rounded">
                   Ensuring a healthy future for your child with timely vaccinations.
                 </p>
-                <button className="btn btn-primary mt-2">Book</button>
+                {/* <button className="btn btn-primary mt-2">Book</button> */}
               </div>
             </div>
           </div>
@@ -40,7 +40,7 @@ const Home = () => {
                 <p className="text-dark p-2 d-inline-block rounded">
                   Get real-time updates and reminders for upcoming vaccinations.
                 </p>
-                <button className="btn btn-primary mt-2">Check</button>
+                {/* <button className="btn btn-primary mt-2">Check</button> */}
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@ const Home = () => {
             <div className="carousel-caption p-3 d-block">
               <div className="d-flex flex-column align-items-center">
                 <h5 className="text-dark p-2 d-inline-block rounded">Get Your Child's Vaccination Details</h5>
-                <button className="btn btn-primary mt-2">Download</button>
+                {/* <button className="btn btn-primary mt-2">Download</button> */}
               </div>
             </div>
           </div>

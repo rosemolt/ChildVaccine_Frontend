@@ -43,7 +43,7 @@ const AddSupplement = () => {
 
   return (
     <div className="add-supplement">
-      <button className="back-button" onClick={() => window.history.back()}>Back to Admin Dashboard</button>
+      {/* <button className="back-button" onClick={() => window.history.back()}>Back to Admin Dashboard</button> */}
       <h2>Add Supplement</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>

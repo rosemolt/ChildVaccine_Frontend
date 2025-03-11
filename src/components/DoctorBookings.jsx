@@ -5,7 +5,7 @@ const DoctorBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const doctorToken = localStorage.getItem("token"); // Assuming JWT token is stored
+    const doctorToken = localStorage.getItem("token");
 
     useEffect(() => {
         fetchBookings();
@@ -13,13 +13,13 @@ const DoctorBookings = () => {
 
     const fetchBookings = async () => {
         try {
-            console.log("Fetching bookings..."); // Debugging log
+            console.log("Fetching bookings...");
             const response = await axios.get("http://localhost:8080/doctor/bookings", {
                 headers: { token: `${doctorToken}` }
             });
-    
-            console.log("API Response:", response.data); // Debugging log
-            setBookings(response.data.bookings); // Check if response.data.bookings is valid
+
+            console.log("API Response:", response.data);
+            setBookings(response.data.bookings);
             setLoading(false);
         } catch (err) {
             console.error("API Error:", err);
@@ -27,21 +27,32 @@ const DoctorBookings = () => {
             setLoading(false);
         }
     };
-    
 
     const markAsCompleted = async (bookingid) => {
+        const nextDoseDate = prompt("Enter Next Dose Date (YYYY-MM-DD):");
+        const supplementProvider = prompt("Enter Supplement Provider:");
+
+        if (!nextDoseDate || !supplementProvider) {
+            alert("Next Dose Date and Supplement Provider are required!");
+            return;
+        }
+
         try {
-            await axios.put(`http://localhost:8080/doctor/update-booking/${bookingid}`, {}, {
-                headers: { token: `${doctorToken}` }
-            });
+            await axios.put(`http://localhost:8080/doctor/update-booking/${bookingid}`, 
+                { nextDoseDate, supplementProvider },
+                { headers: { token: `${doctorToken}` } }
+            );
 
             setBookings((prevBookings) =>
                 prevBookings.map((booking) =>
                     booking.bookingid === bookingid ? { ...booking, status: "Completed" } : booking
                 )
             );
+
+            alert("Booking marked as Completed and Vaccination Record Created.");
         } catch (err) {
             console.error("Error updating booking:", err);
+            alert("Failed to mark as Completed.");
         }
     };
 
@@ -85,19 +96,24 @@ const DoctorBookings = () => {
                                 {booking.status}
                             </td>
                             <td>
-                                {booking.status !== "Completed" && (
+                                {booking.status === "Booked" && (
                                     <button onClick={() => markAsCompleted(booking.bookingid)}
                                         style={{ backgroundColor: "green", color: "white", marginRight: "5px" }}>
                                         Mark Completed
                                     </button>
                                 )}
-                                <button style={{ backgroundColor: "blue", color: "white" }}>Generate Record</button>
+                                {/* <button 
+                                    style={{ backgroundColor: "blue", color: "white" }}
+                                    disabled={booking.status !== "Completed"}
+                                >
+                                    Generate Record
+                                </button> */}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div> 
     );
 };
 

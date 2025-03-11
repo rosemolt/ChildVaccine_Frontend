@@ -4,11 +4,13 @@ import AddSupplement from "./AddSupplement";
 import AdminSupplement from "./AdminSupplement";
 import ScheduleForm from "./ScheduleForm";
 import BookedParents from "./BookedParents";
+import PendingSupplements from "./PendingSupplements";
 
 
 const AdminDashboard = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [selectedOption, setSelectedOption] = useState("welcome");
+    const [scheduleData, setScheduleData] = useState(null);
 
     const renderContent = () => {
         switch (selectedOption) {
@@ -16,8 +18,10 @@ const AdminDashboard = () => {
                 return <AddSupplement />;
             case "adminsupplement":
                 return <AdminSupplement/>;
+            case "pendingchild":
+                return <PendingSupplements setSelectedOption={setSelectedOption} setScheduleData={setScheduleData} />;
             case "schedule":
-                return <ScheduleForm />;
+                return <ScheduleForm scheduleData={scheduleData} />;
             case "bookedParents":
                 return <BookedParents />;
             default:
@@ -39,6 +43,11 @@ const AdminDashboard = () => {
                     <li>
                         <button onClick={() => setSelectedOption("adminsupplement")} className="sidebar-link">
                             <FaClipboardList /> View Supplements
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => setSelectedOption("pendingchild")} className="sidebar-link">
+                            <FaClipboardList /> Pending Child
                         </button>
                     </li>
                     <li>
