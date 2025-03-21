@@ -9,6 +9,7 @@ const ParentRegistration = () => {
     name: "",
     address: "",
     phoneno: "",
+    ward:"",
     email: "",
     password: "",
     confirmPassword: ""
@@ -29,9 +30,12 @@ const ParentRegistration = () => {
 
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.address.trim()) newErrors.address = "Address is required";
-    if (!formData.phoneno.trim()) newErrors.phoneno = "Phone number is required";
-    else if (!/^\d{10}$/.test(formData.phoneno)) newErrors.phoneno = "Phone number must be 10 digits";
-    
+    if (!formData.phoneno.trim()) {
+      newErrors.phoneno = "Phone number is required";
+    } else if (!/^\+?[1-9]\d{9,14}$/.test(formData.phoneno)) {
+      newErrors.phoneno = "Enter a valid phone number with country code (e.g., +911234567890)";
+    }
+    if (!formData.ward.trim()) newErrors.address = "Ward is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!emailRegex.test(formData.email)) newErrors.email = "Invalid email format";
     
@@ -61,9 +65,9 @@ const ParentRegistration = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 py-10">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-cover bg-center" style={{ backgroundImage: "url('/background.jpg')" }}>
       <Navbar />
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+      <div className="bg-white bg-opacity-80 backdrop-blur-lg p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-semibold text-center mb-4">Parent Registration</h2>
         {successMessage && <p className="text-green-600 text-center">{successMessage}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,6 +84,11 @@ const ParentRegistration = () => {
           <div>
             <input type="text" name="phoneno" placeholder="Phone Number" className="input" value={formData.phoneno} onChange={handleChange} />
             {errors.phoneno && <p className="error-text">{errors.phoneno}</p>}
+          </div>
+
+          <div>
+            <input type="text" name="ward" placeholder="Ward" className="input" value={formData.ward} onChange={handleChange} />
+            {errors.ward && <p className="error-text">{errors.ward}</p>}
           </div>
 
           <div>

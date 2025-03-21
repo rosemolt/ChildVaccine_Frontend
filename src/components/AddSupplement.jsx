@@ -1,142 +1,72 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Form, Input, Select, Button, message, Modal, Card } from "antd";
+
+const { Option } = Select;
 
 const AddSupplement = () => {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("Vaccine");
-  const [description, setDescription] = useState("");
-  const [agegroup, setAgegroup] = useState("");
-  const [dosage, setDosage] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const [form] = Form.useForm();
   const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (values) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      setError("Admin not logged in");
+      message.error("Admin not logged in");
       return;
     }
     try {
       const response = await axios.post(
-        "http://localhost:8080/addSupplement", 
-        { name, category, description, agegroup, dosage },
+        "http://localhost:8080/addSupplement",
+        values,
         { headers: { Authorization: `${token}` } }
       );
-      setMessage(response.data.message);
+      setPopupMessage(response.data.message);
       setShowPopup(true);
-      setName("");
-      setCategory("Vaccine");
-      setDescription("");
-      setAgegroup("");
-      setDosage("");
+      form.resetFields();
     } catch (err) {
-      setError(err.response ? err.response.data.message : "Error adding supplement");
+      message.error(err.response ? err.response.data.message : "Error adding supplement");
     }
   };
 
-  const closePopup = () => {
-    setShowPopup(false);
-    setMessage("");
-  };
-
   return (
-    <div className="add-supplement">
-      {/* <button className="back-button" onClick={() => window.history.back()}>Back to Admin Dashboard</button> */}
-      <h2>Add Supplement</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-        </div>
-        <div>
-          <label>Category</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-            <option value="Vaccine">Vaccine</option>
-            <option value="Polio">Polio</option>
-            <option value="Vitamins">Vitamins</option>
-          </select>
-        </div>
-        <div>
-          <label>Description</label>
-          <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
-        </div>
-        <div>
-          <label>Age Group</label>
-          <input type="text" value={agegroup} onChange={(e) => setAgegroup(e.target.value)} required />
-        </div>
-        <div>
-          <label>Dosage</label>
-          <input type="text" value={dosage} onChange={(e) => setDosage(e.target.value)} required />
-        </div>
-        <button type="submit">Add Supplement</button>
-      </form>
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>{message}</p>
-            <button onClick={closePopup}>OK</button>
-          </div>
-        </div>
-      )}
-      <style jsx>{`
-        .add-supplement {
-          width: 60%;
-          margin: 0 auto;
-          padding: 30px;
-          border: 1px solid #e0e0e0;
-          border-radius: 10px;
-          background-color: #fafafa;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .back-button, button {
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-          font-size: 16px;
-        }
-        .back-button { background-color: #007bff; color: white; }
-        .back-button:hover { background-color: #0056b3; }
-        .add-supplement h2 { text-align: center; }
-        .add-supplement div { margin-bottom: 20px; }
-        .add-supplement label { display: block; font-weight: bold; margin-bottom: 8px; }
-        .add-supplement input, .add-supplement select, .add-supplement textarea {
-          width: 100%;
-          padding: 10px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-        }
-        .add-supplement button { background-color: #4caf50; color: white; }
-        .add-supplement button:hover { background-color: #45a049; }
-        .popup {
-          position: fixed;
-          top: 0; left: 0; width: 100%; height: 100%;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        .popup-content {
-          background: white;
-          padding: 20px;
-          border-radius: 8px;
-          text-align: center;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-        .popup-content button {
-          background: #007bff;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          margin-top: 10px;
-        }
-        .popup-content button:hover { background: #0056b3; }
-      `}</style>
-    </div>
+    <Card title="Add Supplement" style={{ width: 600, margin: "auto", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
+      <Form layout="vertical" form={form} onFinish={handleSubmit}>
+        <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please enter the supplement name" }]}>
+          <Input placeholder="Enter supplement name" />
+        </Form.Item>
+
+        <Form.Item label="Category" name="category" initialValue="Vaccine" rules={[{ required: true }]}>
+          <Select>
+            <Option value="Vaccine">Vaccine</Option>
+            <Option value="Polio">Polio</Option>
+            <Option value="Vitamins">Vitamins</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Description" name="description" rules={[{ required: true, message: "Please enter a description" }]}>
+          <Input.TextArea rows={3} placeholder="Enter description" />
+        </Form.Item>
+
+        <Form.Item label="Age Group" name="agegroup" rules={[{ required: true, message: "Please enter the age group" }]}>
+          <Input placeholder="Enter age group" />
+        </Form.Item>
+
+        <Form.Item label="Dosage" name="dosage" rules={[{ required: true, message: "Please enter the dosage" }]}>
+          <Input placeholder="Enter dosage" />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            Add Supplement
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <Modal visible={showPopup} onOk={() => setShowPopup(false)} onCancel={() => setShowPopup(false)}>
+        <p>{popupMessage}</p>
+      </Modal>
+    </Card>
   );
 };
 

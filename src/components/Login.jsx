@@ -28,10 +28,13 @@ const Login = () => {
 
                 if (role === "admin") {
                     navigate("/admindashboard");
-                } else if (role === "doctor") {
-                    navigate("/doctordashboard");
+                } else if (role === "ashaworker") {
+                    navigate("/ashadashboard");
                 } else if (role === "parent") {
                     navigate("/parentdashboard");
+                }
+                else if (role === "infantcaregiver") {
+                    navigate("/caregiverdashboard");
                 }
             }
         } catch (err) {
@@ -48,7 +51,7 @@ const Login = () => {
                 transition={{ duration: 0.5 }}
                 className="login-container"
             >
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">Welcome Back 👋</h2>
+                <h2 className="text-3xl font-bold text-gray-800 mb-6">Welcome Back</h2>
                 
                 {error && (
                     <motion.p 
@@ -87,7 +90,7 @@ const Login = () => {
                 </form>
 
                 {/* Register Link for Parents */}
-                <div className="text-center mt-4 w-full flex flex-col items-center">
+                {/* <div className="text-center mt-4 w-full flex flex-col items-center">
                     <p className="text-gray-700">
                         New to the system?  
                     </p>
@@ -97,7 +100,7 @@ const Login = () => {
                     >
                         Register as a Parent
                     </button>
-                </div>
+                </div> */}
             </motion.div>
             <style jsx>{`
                 /* Apply a background image */

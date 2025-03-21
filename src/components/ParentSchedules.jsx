@@ -19,16 +19,26 @@ const ParentSchedules = () => {
             const response = await axios.get("http://localhost:8080/parent/schedule", {
                 headers: { token }
             });
-
-            const currentDate = new Date().toISOString().split("T")[0];
-
-            const upcomingSchedules = response.data.schedules.filter(schedule => schedule.date >= currentDate);
+    
+            const currentDateTime = new Date(); // Get current system date and time
+    
+            const upcomingSchedules = response.data.schedules.filter(schedule => {
+                if (!schedule.date || !schedule.time) return false; // Ensure valid date & time
+    
+                const [hours, minutes] = schedule.time.split(":").map(Number);
+                const scheduleDateTime = new Date(schedule.date);
+                scheduleDateTime.setHours(hours, minutes, 0, 0); // Set correct time
+    
+                return scheduleDateTime >= currentDateTime; // Only keep future schedules
+            });
+    
             setSchedules(upcomingSchedules);
         } catch (error) {
             console.error("Error fetching schedules:", error);
             setMessage("Failed to fetch schedules.");
         }
     };
+    
 
     // Fetch schedules that the parent has already booked
     const fetchBookedSchedules = async () => {

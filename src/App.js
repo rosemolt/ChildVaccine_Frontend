@@ -19,6 +19,14 @@ import ParentBookings from './components/ParentBookings';
 import BookedParents from './components/BookedParents';
 import DoctorBookings from './components/DoctorBookings';
 import PendingSupplements from './components/PendingSupplements';
+import AdminUpcomingSchedules from './components/AdminUpcomingSchedules';
+import AshaWorkerRegistration from './components/AshaWorkerRegistration';
+import ApproveAshaWorkers from './components/ApproveAshaWorkers';
+import AshaWorkerProfile from './components/AshaWorkerProfile';
+import AshaWorkerDashboard from './components/AshaWorkerDashboard';
+import AshaEligibleChildren from './components/AshaEligibleChildren';
+import CaregiverRegistration from './components/CareGiverRegistration';
+import CareGiverDashboard from './components/CareGiverDashboard';
 
 
 function App() {
@@ -44,6 +52,14 @@ function App() {
         <Route path="/bookedParents" element={<BookedParents />} />
         <Route path="/bookedchild" element={<DoctorBookings />} />
         <Route path="/pendingchild" element={<PendingSupplements />} />
+        <Route path="/upcomingschedules" element={<AdminUpcomingSchedules />} />
+        <Route path="/register-asha" element={<AshaWorkerRegistration />} />
+        <Route path="/ashadashboard" element={<AshaWorkerDashboard />} />
+        <Route path="/approveasha" element={<ApproveAshaWorkers />} />
+        <Route path="/ashaprofile" element={<AshaWorkerProfile />} />
+        <Route path="/asha-eligible-children" element={<AshaEligibleChildren />} />
+        <Route path="/reg-caregiver" element={<CaregiverRegistration />} />
+        <Route path="/caregiverdashboard" element={<CareGiverDashboard />} />
       </Routes>
     </BrowserRouter>
   );

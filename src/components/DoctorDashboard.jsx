@@ -56,7 +56,7 @@ const DoctorDashboard = () => {
             .sidebar {
                 background-color: #1E3A8A;
                 color: white;
-                width: 250px;
+                width: 270px;
                 padding: 20px;
                 transition: width 0.3s ease-in-out;
             }
