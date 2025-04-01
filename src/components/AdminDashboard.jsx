@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaClipboardList, FaPlusCircle, FaUsers, FaSignOutAlt, FaBars, FaUserCircle } from "react-icons/fa";
+import { FaClipboardList, FaPlusCircle, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { Layout, Menu, Button, Typography, Card } from "antd";
 import AddSupplement from "./AddSupplement";
 import AdminSupplement from "./AdminSupplement";
 import ScheduleForm from "./ScheduleForm";
@@ -8,9 +9,12 @@ import PendingSupplements from "./PendingSupplements";
 import AdminUpcomingSchedules from "./AdminUpcomingSchedules";
 import ApproveAshaWorkers from "./ApproveAshaWorkers";
 import AdminMessages from "./Admin Messages";
+import AdminSupplementRequests from "./AdminSupplementRequests";
+
+const { Sider, Content } = Layout;
+const { Title, Text } = Typography;
 
 const AdminDashboard = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [selectedOption, setSelectedOption] = useState("welcome");
     const [scheduleData, setScheduleData] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -30,10 +34,10 @@ const AdminDashboard = () => {
                 return <AdminSupplement />;
             case "approveasha":
                 return <ApproveAshaWorkers />;
+            case "supplement-request":
+                return <AdminSupplementRequests />;
             case "pendingchild":
                 return <PendingSupplements setSelectedOption={setSelectedOption} setScheduleData={setScheduleData} />;
-            case "schedule":
-                return <ScheduleForm scheduleData={scheduleData} />;
             case "upcomingschedules":
                 return <AdminUpcomingSchedules />;
             case "messages":
@@ -42,147 +46,40 @@ const AdminDashboard = () => {
                 return <BookedParents />;
             default:
                 return (
-                    <div className="welcome-section">
-                        <h1>Welcome Back, Admin!</h1>
-                        <p>Today is {currentTime.toLocaleDateString()} - {currentTime.toLocaleTimeString()}</p>
+                    <Card style={{ textAlign: "center", padding: "20px" }}>
+                        <Title level={2}>Welcome Back, Admin!</Title>
+                        <Text strong>Today is {currentTime.toLocaleDateString()} - {currentTime.toLocaleTimeString()}</Text>
                         <p>Manage schedules, approve Asha workers, and keep track of vaccinations efficiently.</p>
-                    </div>
+                    </Card>
                 );
         }
     };
 
     return (
-        <div className="dashboard-container">
-            {/* Sidebar */}
-            <div className={`sidebar ${sidebarOpen ? "open" : "closed"}`}>
-                <div className="admin-profile">
-                    <FaUserCircle className="profile-icon" />
+        <Layout style={{ minHeight: "100vh" }}>
+            <Sider theme="dark" style={{ backgroundColor: "#2d6a4f" }}>
+                <div style={{ textAlign: "center", padding: "20px", color: "white" }}>
+                    <FaUserCircle size={50} />
                     <h3>Admin</h3>
                 </div>
-                <ul className="sidebar-menu">
-                    <li><button onClick={() => setSelectedOption("addSupplement")}><FaPlusCircle /> Add Supplement</button></li>
-                    <li><button onClick={() => setSelectedOption("adminsupplement")}><FaClipboardList /> View Supplements</button></li>
-                    <li><button onClick={() => setSelectedOption("approveasha")}><FaClipboardList /> Approve Asha Workers</button></li>
-                    <li><button onClick={() => setSelectedOption("pendingchild")}><FaClipboardList /> Pending Child</button></li>
-                    <li><button onClick={() => setSelectedOption("schedule")}><FaUsers /> Schedule</button></li>
-                    <li><button onClick={() => setSelectedOption("upcomingschedules")}><FaClipboardList /> Upcoming Schedules</button></li>
-                    <li><button onClick={() => setSelectedOption("messages")}><FaClipboardList /> Messages</button></li>
-                    <li><button onClick={() => setSelectedOption("bookedParents")}><FaClipboardList /> Booked Parents</button></li>
-                </ul>
-                <a href="/" className="logout-btn"><FaSignOutAlt /> Logout</a>
-            </div>
-
-            {/* Main Content */}
-            <div className="main-content">
-                <button onClick={() => setSidebarOpen(!sidebarOpen)} className="toggle-btn">
-                    <FaBars />
-                </button>
-                <div className="content-box">
+                <Menu theme="dark" mode="vertical" selectedKeys={[selectedOption]} style={{ backgroundColor: "#2d6a4f" }}> 
+                    <Menu.Item key="addSupplement" onClick={() => setSelectedOption("addSupplement")} icon={<FaPlusCircle />}>Add Supplement</Menu.Item>
+                    <Menu.Item key="adminsupplement" onClick={() => setSelectedOption("adminsupplement")} icon={<FaClipboardList />}>View Supplements</Menu.Item>
+                    <Menu.Item key="approveasha" onClick={() => setSelectedOption("approveasha")} icon={<FaClipboardList />}>Approve Asha Workers</Menu.Item>
+                    <Menu.Item key="supplement-request" onClick={() => setSelectedOption("supplement-request")} icon={<FaClipboardList />}>Supplement Request</Menu.Item>
+                    <Menu.Item key="pendingchild" onClick={() => setSelectedOption("pendingchild")} icon={<FaClipboardList />}>Children List</Menu.Item>
+                    <Menu.Item key="upcomingschedules" onClick={() => setSelectedOption("upcomingschedules")} icon={<FaClipboardList />}>Upcoming Schedules</Menu.Item>
+                    <Menu.Item key="messages" onClick={() => setSelectedOption("messages")} icon={<FaClipboardList />}>Messages</Menu.Item>
+                    <Menu.Item key="bookedParents" onClick={() => setSelectedOption("bookedParents")} icon={<FaClipboardList />}>Booked Parents</Menu.Item>
+                </Menu>
+                <Button type="primary" danger block href="/" style={{ marginTop: "20px" }} icon={<FaSignOutAlt />}>Logout</Button>
+            </Sider>
+            <Layout>
+                <Content style={{ margin: "20px", padding: "20px", background: "#fff", borderRadius: "10px" }}>
                     {renderContent()}
-                </div>
-            </div>
-
-            <style jsx>{`
-            .dashboard-container {
-                display: flex;
-                height: 100vh;
-                background-color: #eef7f5;
-            }
-
-            .sidebar {
-                background: linear-gradient(135deg, #1b4332, #2d6a4f);
-                color: white;
-                width: 260px;
-                transition: width 0.3s;
-                padding: 20px;
-            }
-
-            .sidebar.closed {
-                width: 70px;
-                overflow: hidden;
-            }
-
-            .admin-profile {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .profile-icon {
-                font-size: 50px;
-            }
-
-            .sidebar-menu button {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                color: white;
-                width: 100%;
-                text-align: left;
-                background: none;
-                border: none;
-                padding: 12px;
-                cursor: pointer;
-                border-radius: 5px;
-                transition: background 0.3s;
-                font-size: 16px;
-            }
-
-            .sidebar-menu button:hover {
-                background-color: rgba(255, 255, 255, 0.2);
-            }
-
-            .logout-btn {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-top: 20px;
-                padding: 10px;
-                background-color: #b91c1c;
-                color: white;
-                text-decoration: none;
-                border-radius: 5px;
-                text-align: center;
-                transition: background 0.3s;
-            }
-
-            .logout-btn:hover {
-                background-color: #8b0000;
-            }
-
-            .main-content {
-                flex: 1;
-                padding: 20px;
-                position: relative;
-            }
-
-            .toggle-btn {
-                background-color: #40916c;
-                color: white;
-                border: none;
-                padding: 10px;
-                border-radius: 5px;
-                cursor: pointer;
-                position: absolute;
-                top: 10px;
-                left: 10px;
-            }
-
-            .content-box {
-                background-color: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            .welcome-section {
-                text-align: center;
-                font-size: 20px;
-                font-weight: bold;
-                color: #2d6a4f;
-                padding: 20px;
-            }
-            `}</style>
-        </div>
+                </Content>
+            </Layout>
+        </Layout>
     );
 };
 

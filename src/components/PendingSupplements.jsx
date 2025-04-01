@@ -14,7 +14,26 @@ const PendingSupplements = ({ setSelectedOption, setScheduleData }) => {
                 const response = await axios.get("http://localhost:8080/eligible-children", {
                     headers: { Authorization: `${token}` },
                 });
-                setEligibleChildren(response.data.eligibleChildren);
+                
+                const categorizedData = response.data.categorizedChildren;
+                let formattedData = [];
+
+                Object.keys(categorizedData).forEach((supplementName) => {
+                    Object.keys(categorizedData[supplementName]).forEach((status) => {
+                        categorizedData[supplementName][status].forEach((child) => {
+                            formattedData.push({
+                                childName: child.childName,
+                                childId: child.childId,
+                                ageGroup: child.ageGroup,
+                                supplementName: child.supplementName,
+                                supplementType: child.supplementType,
+                                bookingStatus: status,
+                            });
+                        });
+                    });
+                });
+                
+                setEligibleChildren(formattedData);
             } catch (err) {
                 setError("Failed to fetch data");
             } finally {
@@ -38,22 +57,23 @@ const PendingSupplements = ({ setSelectedOption, setScheduleData }) => {
             title: "Booking Status", 
             dataIndex: "bookingStatus", 
             key: "bookingStatus",
-            render: (status) => (
-                <span style={{ fontWeight: "bold", color: status === "Booked" ? "#27ae60" : "#e67e22" }}>
-                    {status}
-                </span>
-            ),
+            render: (status) => {
+                let color = "#e67e22"; // Default orange
+                if (status === "Booked") color = "#27ae60"; // Green for booked
+                if (status === "Completed") color = "#2ecc71"; // Bright green for completed
+                return <span style={{ fontWeight: "bold", color }}>{status}</span>;
+            },
         },
-        {
-            title: "Action",
-            key: "action",
-            render: (record) =>
-                record.bookingStatus !== "Booked" && record.bookingStatus !== "Completed" ? (
-                    <Button type="primary" onClick={() => handleSchedule(record.childId, record.childName, record.supplementName)}>
-                        Schedule
-                    </Button>
-                ) : null,
-        },
+        // {
+        //     title: "Action",
+        //     key: "action",
+        //     render: (record) =>
+        //         record.bookingStatus === "NotBooked" ? (
+        //             <Button type="primary" onClick={() => handleSchedule(record.childId, record.childName, record.supplementName)}>
+        //                 Schedule
+        //             </Button>
+        //         ) : null,
+        // },
     ];
 
     return (

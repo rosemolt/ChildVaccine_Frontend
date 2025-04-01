@@ -11,6 +11,7 @@ import ParentSchedules from "./ParentSchedules";
 import ParentBookings from "./ParentBookings";
 import RequestCaregiver from "./RequestCaregiver";
 import AssignedCaregiver from "./AssignedCaregiver";
+import ConfirmVaccination from "./ConfirmVaccination";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -35,6 +36,8 @@ const ParentDashboard = () => {
                 return <RequestCaregiver />;
             case "caregiver":
                     return <AssignedCaregiver />;
+            case "confirm":
+                return <ConfirmVaccination />;
             default:
                 return (
                     <Card style={{ textAlign: "center", padding: "40px" }}>
@@ -81,6 +84,9 @@ const ParentDashboard = () => {
                     </Menu.Item>
                     <Menu.Item key="caregiver" icon={<FaClipboardList />} onClick={() => setSelectedOption("caregiver")}>
                         Assigned Caregiver
+                    </Menu.Item>
+                    <Menu.Item key="confirm" icon={<FaClipboardList />} onClick={() => setSelectedOption("confirm")}>
+                        Confirm Vaccinated
                     </Menu.Item>
                     <Menu.Item key="logout" icon={<FaSignOutAlt />} onClick={handleLogout} danger>
                         Logout

@@ -1,112 +1,91 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Form, Input, Button, Upload, message, Typography } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import Navbar from "./Navbar";
 
+const { Title, Text } = Typography;
+
 const AshaWorkerRegistration = () => {
-    const [formData, setFormData] = useState({
-        name: "",
-        address: "",
-        phoneno: "",
-        ward: "",
-        email: "",
-        password: "",
-        verification_doc: null
-    });
-    const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+    const [form] = Form.useForm();
+    const [file, setFile] = useState(null);
     const navigate = useNavigate();
 
-    const validateForm = () => {
-        if (!formData.name.trim() || !formData.address.trim() || !formData.ward.trim()) {
-            setError("All fields are required");
-            return false;
+    const handleFileChange = (info) => {
+        if (info.file.status === "done" || info.file.status === "uploading") {
+            setFile(info.file.originFileObj);
         }
-        if (!/^[0-9]{10}$/.test(formData.phoneno)) {
-            setError("Phone number must be 10 digits");
-            return false;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            setError("Invalid email format");
-            return false;
-        }
-        if (!/(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/.test(formData.password)) {
-            setError("Password must contain at least 8 characters, including a letter, a number, and a symbol");
-            return false;
-        }
-        if (!formData.verification_doc) {
-            setError("Verification document is required");
-            return false;
-        }
-        setError("");
-        return true;
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleFileChange = (e) => {
-        setFormData((prev) => ({ ...prev, verification_doc: e.target.files[0] }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setSuccess("");
-        
-        if (!validateForm()) return;
-        
+    const onFinish = async (values) => {
         const formDataToSend = new FormData();
-        Object.keys(formData).forEach((key) => {
-            formDataToSend.append(key, formData[key]);
+        Object.keys(values).forEach((key) => {
+            formDataToSend.append(key, values[key]);
         });
+        if (file) {
+            formDataToSend.append("verification_doc", file);
+        }
 
         try {
             const response = await axios.post("http://localhost:8080/registerAsha", formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-            
-            setSuccess(response.data.status);
+            message.success(response.data.status);
             setTimeout(() => navigate("/login"), 2000);
         } catch (err) {
-            setError(err.response?.data?.status || "Registration failed. Try again.");
+            message.error(err.response?.data?.status || "Registration failed. Try again.");
         }
     };
 
     return (
         <div className="flex flex-col items-center min-h-screen bg-gray-100 py-10">
             <Navbar />
-            <div className="container">
-                <h2>Asha Worker Registration</h2>
-                {error && <p className="error">{error}</p>}
-                {success && <p className="success">{success}</p>}
-                
-                <form onSubmit={handleSubmit}>
-                    <label>Name:</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                    
-                    <label>Address:</label>
-                    <input type="text" name="address" value={formData.address} onChange={handleChange} required />
-                    
-                    <label>Phone Number:</label>
-                    <input type="text" name="phoneno" value={formData.phoneno} onChange={handleChange} required />
-                    
-                    <label>Ward:</label>
-                    <input type="text" name="ward" value={formData.ward} onChange={handleChange} required />
-                    
-                    <label>Email:</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-                    
-                    <label>Password:</label>
-                    <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-                    
-                    <label>Upload Verification Document:</label>
-                    <input type="file" name="verification_doc" onChange={handleFileChange} required />
-                    
-                    <button type="submit">Register</button>
-                </form>
-                <p className="text-center mt-4">Already registered? <a href="/login" className="text-blue-500">Login here</a></p>
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+                <Title level={2} className="text-center">Asha Worker Registration</Title>
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onFinish}
+                >
+                    <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter your name" }]}> 
+                        <Input placeholder="Enter your name" />
+                    </Form.Item>
+
+                    <Form.Item name="address" label="Address" rules={[{ required: true, message: "Please enter your address" }]}> 
+                        <Input placeholder="Enter your address" />
+                    </Form.Item>
+
+                    <Form.Item name="phoneno" label="Phone Number" 
+                        rules={[{ required: true, pattern: /^[0-9]{10}$/, message: "Enter a valid 10-digit phone number" }]}> 
+                        <Input placeholder="Enter your phone number" />
+                    </Form.Item>
+
+                    <Form.Item name="ward" label="Ward" rules={[{ required: true, message: "Please enter your ward" }]}> 
+                        <Input placeholder="Enter your ward" />
+                    </Form.Item>
+
+                    <Form.Item name="email" label="Email" 
+                        rules={[{ required: true, type: "email", message: "Enter a valid email" }]}> 
+                        <Input placeholder="Enter your email" />
+                    </Form.Item>
+
+                    <Form.Item name="password" label="Password" 
+                        rules={[{ required: true, pattern: /(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}/, message: "Password must contain at least 8 characters, a letter, a number, and a symbol" }]}> 
+                        <Input.Password placeholder="Enter your password" />
+                    </Form.Item>
+
+                    <Form.Item label="Upload Verification Document" rules={[{ required: true, message: "Verification document is required" }]}> 
+                        <Upload beforeUpload={() => false} onChange={handleFileChange} maxCount={1}>
+                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" block>Register</Button>
+                    </Form.Item>
+                </Form>
+                <Text className="block text-center mt-4">Already registered? <a href="/login" className="text-blue-500">Login here</a></Text>
             </div>
         </div>
     );

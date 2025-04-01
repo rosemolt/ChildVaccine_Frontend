@@ -79,15 +79,15 @@ const AshaWorkerBookings = () => {
             key: "status", 
             render: (status) => (<span style={{ color: status === "Completed" ? "green" : "red" }}>{status}</span>)
         },
-        {
-            title: "Actions",
-            key: "actions",
-            render: (_, record) => (
-                record.status === "Booked" && (
-                    <Button type="primary" onClick={() => showModal(record.bookingid)}>Mark Completed</Button>
-                )
-            )
-        }
+        // {
+        //     title: "Actions",
+        //     key: "actions",
+        //     render: (_, record) => (
+        //         record.status === "Booked" && (
+        //             <Button type="primary" onClick={() => showModal(record.bookingid)}>Mark Completed</Button>
+        //         )
+        //     )
+        // }
     ];
 
     return (
@@ -96,7 +96,7 @@ const AshaWorkerBookings = () => {
             {error && <p style={{ color: "red" }}>{error}</p>}
             <Table columns={columns} dataSource={bookings} loading={loading} rowKey="bookingid" bordered />
             
-            <Modal
+            {/* <Modal
                 title="Mark as Completed"
                 visible={isModalOpen}
                 onOk={handleMarkAsCompleted}
@@ -106,7 +106,7 @@ const AshaWorkerBookings = () => {
                 <Input value={nextDoseDate} onChange={(e) => setNextDoseDate(e.target.value)} placeholder="YYYY-MM-DD" />
                 <p style={{ marginTop: "10px" }}>Enter Supplement Provider:</p>
                 <Input value={supplementProvider} onChange={(e) => setSupplementProvider(e.target.value)} placeholder="Enter Provider" />
-            </Modal>
+            </Modal> */}
         </div>
     );
 };

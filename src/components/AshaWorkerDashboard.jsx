@@ -15,6 +15,9 @@ import AshaSchedules from "./AshaSchedules";
 import AshaWorkerBookings from "./AshaWorkerBookings";
 import CaregiverApproval from "./CaregiverApproval";
 import AssignCaregiver from "./AssignCaregiver";
+import AshaWorkerCompletedBookings from "./AshaWorkerCompletedBookings";
+import AshaWorkerSupplementRequest from "./AshaWorkerSupplementRequest";
+import ScheduleForm from "./ScheduleForm";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -28,12 +31,18 @@ const AshaWorkerDashboard = () => {
                 return <AshaWorkerProfile />;
             case "asha-eligible-children":
                 return <AshaEligibleChildren />;
+            case "schedule":
+                return <ScheduleForm />;
             case "asha-message":
                 return <AshaMessageForm />;
+            case "asha-request":
+                return <AshaWorkerSupplementRequest />;
             case "asha-schedules":
                 return <AshaSchedules />;
             case "asha-bookedchild":
                 return <AshaWorkerBookings />;
+            case "asha-completedchild":
+                return <AshaWorkerCompletedBookings />;
             case "asha-caregiverapproval":
                 return <CaregiverApproval />;
             case "asha-assigncaregiver":
@@ -60,9 +69,12 @@ const AshaWorkerDashboard = () => {
                 >
                     <Menu.Item key="ashaprofile" icon={<UserOutlined />}>Profile</Menu.Item>
                     <Menu.Item key="asha-eligible-children" icon={<ProfileOutlined />}>Pending Children</Menu.Item>
+                    <Menu.Item key="schedule" icon={<MessageOutlined />}>Schedule slot</Menu.Item>
                     <Menu.Item key="asha-message" icon={<MessageOutlined />}>Send Message</Menu.Item>
+                    <Menu.Item key="asha-request" icon={<ScheduleOutlined />}>Request Supplement</Menu.Item>
                     <Menu.Item key="asha-schedules" icon={<ScheduleOutlined />}>Schedules</Menu.Item>
                     <Menu.Item key="asha-bookedchild" icon={<FileDoneOutlined />}>Booked Child</Menu.Item>
+                    <Menu.Item key="asha-completedchild" icon={<FileDoneOutlined />}>Update Records</Menu.Item>
                     <Menu.Item key="asha-caregiverapproval" icon={<FileDoneOutlined />}>Caregivers</Menu.Item>
                     <Menu.Item key="asha-assigncaregiver" icon={<FileDoneOutlined />}>Caregiver Request</Menu.Item>
                     <Menu.Item key="logout" icon={<LogoutOutlined />}>
