@@ -30,8 +30,8 @@ const CaregiverRequests = () => {
             setRequests([]);
         }
     } catch (error) {
-        console.error("Error fetching assigned requests:", error);
-        message.error("Error fetching assigned requests.");
+        // console.error("Error fetching assigned requests:", error);
+        // message.error("Error fetching assigned requests.");
     }
 };
 

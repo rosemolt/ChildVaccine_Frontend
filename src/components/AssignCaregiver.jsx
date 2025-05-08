@@ -137,7 +137,11 @@ const AssignCaregiver = () => {
                             onClick={() => setSelectedCaregiver(caregiver.infantCaregiverId)}
                         >
                             <p><strong>Name:</strong> {caregiver.fullName}</p>
+                            <p><strong>Age:</strong> {caregiver.age}</p>
                             <p><strong>Contact:</strong> {caregiver.contactNumber}</p>
+                            <p><strong>Address:</strong> {caregiver.address}</p>
+                            <p><strong>Languages known:</strong> {caregiver.languages}</p>
+                            <p><strong>Preffered locations:</strong> {caregiver.prefferedLocations}</p>
                             <p><strong>Email:</strong> {caregiver.email}</p>
                             <p><strong>Experience:</strong> {caregiver.experience}</p>
                         </Card>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaClipboardList, FaPlusCircle, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
+import { FaClipboardList, FaPlusCircle, FaSignOutAlt, FaUserCircle, FaCalendarAlt, FaUsers, FaEnvelope, FaInbox, FaListAlt } from "react-icons/fa";
 import { Layout, Menu, Button, Typography, Card } from "antd";
 import AddSupplement from "./AddSupplement";
 import AdminSupplement from "./AdminSupplement";
@@ -64,13 +64,13 @@ const AdminDashboard = () => {
                 </div>
                 <Menu theme="dark" mode="vertical" selectedKeys={[selectedOption]} style={{ backgroundColor: "#2d6a4f" }}> 
                     <Menu.Item key="addSupplement" onClick={() => setSelectedOption("addSupplement")} icon={<FaPlusCircle />}>Add Supplement</Menu.Item>
-                    <Menu.Item key="adminsupplement" onClick={() => setSelectedOption("adminsupplement")} icon={<FaClipboardList />}>View Supplements</Menu.Item>
-                    <Menu.Item key="approveasha" onClick={() => setSelectedOption("approveasha")} icon={<FaClipboardList />}>Approve Asha Workers</Menu.Item>
+                    <Menu.Item key="adminsupplement" onClick={() => setSelectedOption("adminsupplement")} icon={<FaListAlt />}>View Supplements</Menu.Item>
+                    <Menu.Item key="approveasha" onClick={() => setSelectedOption("approveasha")} icon={<FaUsers />}>Approve Asha Workers</Menu.Item>
                     <Menu.Item key="supplement-request" onClick={() => setSelectedOption("supplement-request")} icon={<FaClipboardList />}>Supplement Request</Menu.Item>
                     <Menu.Item key="pendingchild" onClick={() => setSelectedOption("pendingchild")} icon={<FaClipboardList />}>Children List</Menu.Item>
-                    <Menu.Item key="upcomingschedules" onClick={() => setSelectedOption("upcomingschedules")} icon={<FaClipboardList />}>Upcoming Schedules</Menu.Item>
-                    <Menu.Item key="messages" onClick={() => setSelectedOption("messages")} icon={<FaClipboardList />}>Messages</Menu.Item>
-                    <Menu.Item key="bookedParents" onClick={() => setSelectedOption("bookedParents")} icon={<FaClipboardList />}>Booked Parents</Menu.Item>
+                    <Menu.Item key="upcomingschedules" onClick={() => setSelectedOption("upcomingschedules")} icon={<FaCalendarAlt />}>Upcoming Schedules</Menu.Item>
+                    <Menu.Item key="messages" onClick={() => setSelectedOption("messages")} icon={<FaEnvelope />}>Messages</Menu.Item>
+                    <Menu.Item key="bookedParents" onClick={() => setSelectedOption("bookedParents")} icon={<FaInbox />}>Booked Parents</Menu.Item>
                 </Menu>
                 <Button type="primary" danger block href="/" style={{ marginTop: "20px" }} icon={<FaSignOutAlt />}>Logout</Button>
             </Sider>

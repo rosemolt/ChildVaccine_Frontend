@@ -101,11 +101,30 @@ const AshaWorkerCompletedBookings = () => {
         <div>
             <h2>Completed Bookings</h2>
             {loading ? <Spin size="large" /> : <Table dataSource={bookings} columns={columns} rowKey="bookingid" />}
-            <Modal title="Update Vaccination Record" open={isModalOpen} onOk={handleUpdateBooking} onCancel={() => setIsModalOpen(false)}>
-                <p>Updating record for {selectedBooking?.childName}</p>
-                <Input placeholder="Next Dose Date" type="date" value={nextDoseDate} onChange={(e) => setNextDoseDate(e.target.value)} />
-                <Input placeholder="Supplement Provider" value={supplementProvider} onChange={(e) => setSupplementProvider(e.target.value)} style={{ marginTop: 10 }} />
+            <Modal 
+                title="Update Vaccination Record" 
+                open={isModalOpen} 
+                onOk={handleUpdateBooking} 
+                onCancel={() => setIsModalOpen(false)}
+            >
+                <p>Updating record for <strong>{selectedBooking?.childName}</strong></p>
+                
+                <label>Next Dose Date:</label>
+                <Input 
+                    type="date" 
+                    value={nextDoseDate} 
+                    onChange={(e) => setNextDoseDate(e.target.value)} 
+                    style={{ marginBottom: 10 }}
+                />
+
+                <label>Supplement Provider:</label>
+                <Input 
+                    placeholder="Enter supplement provider" 
+                    value={supplementProvider} 
+                    onChange={(e) => setSupplementProvider(e.target.value)} 
+                />
             </Modal>
+
         </div>
     );
 };

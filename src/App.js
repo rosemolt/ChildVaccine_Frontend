@@ -27,6 +27,7 @@ import AshaWorkerDashboard from './components/AshaWorkerDashboard';
 import AshaEligibleChildren from './components/AshaEligibleChildren';
 import CaregiverRegistration from './components/CareGiverRegistration';
 import CareGiverDashboard from './components/CareGiverDashboard';
+import VaccineInfo from './components/VaccineInfo';
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
         <Route path="/asha-eligible-children" element={<AshaEligibleChildren />} />
         <Route path="/reg-caregiver" element={<CaregiverRegistration />} />
         <Route path="/caregiverdashboard" element={<CareGiverDashboard />} />
+        <Route path="/info" element={<VaccineInfo />} />
       </Routes>
     </BrowserRouter>
   );

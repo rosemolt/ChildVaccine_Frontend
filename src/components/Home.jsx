@@ -35,6 +35,9 @@ const Home = () => {
                 <p className="text-dark p-2 d-inline-block rounded">
                   Ensuring a healthy future for your child with timely vaccinations.
                 </p>
+                <Link to="/info" className="mt-2">
+                  <Button type="primary" className="btn-light text-dark">Click Here to Learn More</Button>
+                </Link>
               </div>
             </div>
           </div>

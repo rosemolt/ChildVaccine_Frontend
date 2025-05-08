@@ -15,13 +15,13 @@ const CaregiverApproval = () => {
         fetchApprovedCaregivers();
     }, []);
 
-    // Fetch Pending Caregivers
     const fetchCaregivers = async () => {
         try {
             const response = await axios.get("http://localhost:8080/caregivers", {
                 headers: { token: `${localStorage.getItem("token")}` },
             });
-            setPendingCaregivers(response.data.caregivers);
+            const filteredCaregivers = response.data.caregivers.filter(cg => cg.status !== "Approved");
+            setPendingCaregivers(filteredCaregivers);
         } catch (error) {
             message.error("Failed to fetch caregivers");
         } finally {
@@ -29,7 +29,6 @@ const CaregiverApproval = () => {
         }
     };
 
-    // Fetch Approved Caregivers
     const fetchApprovedCaregivers = async () => {
         try {
             const response = await axios.get("http://localhost:8080/approved-caregivers", {
@@ -41,7 +40,6 @@ const CaregiverApproval = () => {
         }
     };
 
-    // Update Caregiver Status
     const updateCaregiverStatus = async (id, status) => {
         try {
             await axios.post(
@@ -51,13 +49,12 @@ const CaregiverApproval = () => {
             );
 
             if (status === "Approved") {
-                // Move caregiver to the approved list
                 const caregiver = pendingCaregivers.find(cg => cg.infantCaregiverId === id);
                 setApprovedCaregivers([...approvedCaregivers, { ...caregiver, status }]);
                 setPendingCaregivers(pendingCaregivers.filter(cg => cg.infantCaregiverId !== id));
             } else {
-                // Remove caregiver from pending list if rejected
                 setPendingCaregivers(pendingCaregivers.filter(cg => cg.infantCaregiverId !== id));
+                setApprovedCaregivers(approvedCaregivers.filter(cg => cg.infantCaregiverId !== id));
             }
 
             message.success(`Caregiver ${status} successfully`);
@@ -66,7 +63,6 @@ const CaregiverApproval = () => {
         }
     };
 
-    // Table columns for caregivers
     const columns = [
         { title: "Name", dataIndex: "fullName", key: "fullName" },
         { title: "Age", dataIndex: "age", key: "age" },
@@ -75,67 +71,69 @@ const CaregiverApproval = () => {
         { title: "Email", dataIndex: "email", key: "email" },
         { title: "Address", dataIndex: "address", key: "address" },
         { title: "Experience", dataIndex: "experience", key: "experience" },
-        { 
-            title: "Languages", 
-            dataIndex: "languages", 
-            key: "languages", 
-            render: (text) => Array.isArray(text) ? text.join(", ") : text || "N/A" 
-        },
-        { 
-            title: "Preferred Locations", 
-            dataIndex: "preferredLocations", 
-            key: "preferredLocations", 
-            render: (text) => Array.isArray(text) ? text.join(", ") : text || "N/A" 
-        },
-        {
-            title: "ID Proof",
-            dataIndex: "idProof",
-            key: "idProof",
-            render: (text) => text ? <a href={`http://localhost:8080/${text}`} target="_blank" rel="noopener noreferrer">View</a> : "Not Uploaded"
-        },
+        { title: "Languages", dataIndex: "languages", key: "languages" },
+        { title: "Preferred Locations", dataIndex: "preferredLocations", key: "preferredLocations" },
         { title: "Ward", dataIndex: "ward", key: "ward" },
         { 
-            title: "Status", 
-            dataIndex: "status", 
-            key: "status", 
-            render: (text) => <span style={{ color: text === "Approved" ? "green" : text === "Rejected" ? "red" : "blue" }}>{text}</span> 
+            title: "ID Proof", 
+            dataIndex: "idProof", 
+            key: "idProof", 
+            render: text => text ? <a href={`http://localhost:8080/${text}`} target="_blank" rel="noopener noreferrer">View</a> : "Not Uploaded" 
         },
+    ];
+
+    const pendingColumns = [
+        ...columns,
         {
             title: "Actions",
             key: "actions",
             render: (text, record) => (
                 <>
-                    {record.status !== "Approved" && (
-                        <Button 
-                            type="primary" 
-                            onClick={() => updateCaregiverStatus(record.infantCaregiverId, "Approved")} 
-                            style={{ marginRight: 8 }}
-                        >
-                            Approve
-                        </Button>
-                    )}
-                    {record.status !== "Rejected" && (
-                        <Button 
-                            type="primary" 
-                            danger 
-                            onClick={() => updateCaregiverStatus(record.infantCaregiverId, "Rejected")}
-                        >
-                            Reject
-                        </Button>
-                    )}
+                    <Button 
+                        type="primary" 
+                        onClick={() => updateCaregiverStatus(record.infantCaregiverId, "Approved")} 
+                        style={{ marginRight: 8 }}
+                    >
+                        Approve
+                    </Button>
+                    <Button 
+                        type="primary" 
+                        danger 
+                        onClick={() => updateCaregiverStatus(record.infantCaregiverId, "Rejected")}
+                    >
+                        Reject
+                    </Button>
                 </>
             ),
         }
     ];
 
-    // Table columns for approved caregivers (including all required details)
     const approvedColumns = [
-        ...columns.filter(col => col.key !== "actions"),
+        ...columns,
         { 
             title: "Available", 
             dataIndex: "available", 
             key: "available", 
-            render: (text) => text ? "Yes" : "No" 
+            render: text => text ? "Yes" : "No" 
+        },
+        { 
+            title: "Assigned Parent", 
+            dataIndex: "assignedParent", 
+            key: "assignedParent", 
+            render: text => text || "Not Assigned" 
+        },
+        {
+            title: "Actions",
+            key: "actions",
+            render: (text, record) => (
+                <Button 
+                    type="primary" 
+                    danger 
+                    onClick={() => updateCaregiverStatus(record.infantCaregiverId, "Rejected")}
+                >
+                    Reject
+                </Button>
+            ),
         }
     ];
 
@@ -144,12 +142,10 @@ const CaregiverApproval = () => {
             <Title level={2}>Caregivers Management</Title>
 
             <Tabs defaultActiveKey="1">
-                {/* Pending Caregivers Tab */}
                 <TabPane tab="Pending Caregivers" key="1">
-                    {loading ? <Spin size="large" /> : <Table dataSource={pendingCaregivers} columns={columns} rowKey="infantCaregiverId" />}
+                    {loading ? <Spin size="large" /> : <Table dataSource={pendingCaregivers} columns={pendingColumns} rowKey="infantCaregiverId" />}
                 </TabPane>
 
-                {/* Approved Caregivers Tab */}
                 <TabPane tab="Approved Caregivers" key="2">
                     {loading ? <Spin size="large" /> : <Table dataSource={approvedCaregivers} columns={approvedColumns} rowKey="infantCaregiverId" />}
                 </TabPane>

@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import CaregiverProfile from "./CaregiverProfile";
 import CaregiverRequests from "./CaregiverRequests";
+import AssignedParentDetails from "./AssignedParentDetails";
 
 const { Header, Content, Sider } = Layout;
 const { Title } = Typography;
@@ -23,8 +24,8 @@ const CareGiverDashboard = () => {
                 return <CaregiverProfile />;
             case "request":
                 return <CaregiverRequests />;
-            // case "asha-message":
-            //     return <AshaMessageForm />;
+            case "assignedparent":
+                return <AssignedParentDetails />;
             // case "asha-schedules":
             //     return <AshaSchedules />;
             // case "asha-bookedchild":
@@ -53,8 +54,8 @@ const CareGiverDashboard = () => {
                 >
                     <Menu.Item key="caregiverprofile" icon={<UserOutlined />}>Profile</Menu.Item>
                     <Menu.Item key="request" icon={<ProfileOutlined />}>Requests</Menu.Item>
-                    {/* <Menu.Item key="asha-message" icon={<MessageOutlined />}>Send Message</Menu.Item>
-                    <Menu.Item key="asha-schedules" icon={<ScheduleOutlined />}>Schedules</Menu.Item>
+                    <Menu.Item key="assignedparent" icon={<MessageOutlined />}>Assigned Parent</Menu.Item>
+                    {/* <Menu.Item key="asha-schedules" icon={<ScheduleOutlined />}>Schedules</Menu.Item>
                     <Menu.Item key="asha-bookedchild" icon={<FileDoneOutlined />}>Booked Child</Menu.Item>
                     <Menu.Item key="asha-caregiverapproval" icon={<FileDoneOutlined />}>Caregivers</Menu.Item> */}
                     <Menu.Item key="logout" icon={<LogoutOutlined />}>

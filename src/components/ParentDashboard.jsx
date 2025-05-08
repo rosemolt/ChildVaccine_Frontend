@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Layout, Menu, Button, Typography, Card } from "antd";
-import { 
-    FaClipboardList, FaPlusCircle, FaUsers, FaSignOutAlt, 
-    FaBars, FaUserCircle, FaCalendarCheck 
-} from "react-icons/fa";
+import { FaUserCircle,FaPlusCircle, FaRegEye, FaCalendarPlus, FaCalendarCheck, FaHandsHelping, FaUserCheck, FaCheckCircle, FaSignOutAlt, FaBars } from "react-icons/fa";
 import ParentProfile from "./ParentProfile";
 import AddChild from "./AddChild";
 import ViewChildren from "./ViewChildren";
@@ -70,22 +67,22 @@ const ParentDashboard = () => {
                     <Menu.Item key="add-child" icon={<FaPlusCircle />} onClick={() => setSelectedOption("add-child")}>
                         Add Child
                     </Menu.Item>
-                    <Menu.Item key="view-child" icon={<FaClipboardList />} onClick={() => setSelectedOption("view-child")}>
+                    <Menu.Item key="view-child" icon={<FaRegEye />} onClick={() => setSelectedOption("view-child")}>
                         View Child
                     </Menu.Item>
-                    <Menu.Item key="booking" icon={<FaCalendarCheck />} onClick={() => setSelectedOption("booking")}>
+                    <Menu.Item key="booking" icon={<FaCalendarPlus />} onClick={() => setSelectedOption("booking")}>
                         Booking
                     </Menu.Item>
-                    <Menu.Item key="view-booking" icon={<FaClipboardList />} onClick={() => setSelectedOption("view-booking")}>
+                    <Menu.Item key="view-booking" icon={<FaCalendarCheck />} onClick={() => setSelectedOption("view-booking")}>
                         Your Bookings
                     </Menu.Item>
-                    <Menu.Item key="request-caregiver" icon={<FaClipboardList />} onClick={() => setSelectedOption("request-caregiver")}>
+                    <Menu.Item key="request-caregiver" icon={<FaHandsHelping />} onClick={() => setSelectedOption("request-caregiver")}>
                         Request Caregiver
                     </Menu.Item>
-                    <Menu.Item key="caregiver" icon={<FaClipboardList />} onClick={() => setSelectedOption("caregiver")}>
+                    <Menu.Item key="caregiver" icon={<FaUserCheck />} onClick={() => setSelectedOption("caregiver")}>
                         Assigned Caregiver
                     </Menu.Item>
-                    <Menu.Item key="confirm" icon={<FaClipboardList />} onClick={() => setSelectedOption("confirm")}>
+                    <Menu.Item key="confirm" icon={<FaCheckCircle />} onClick={() => setSelectedOption("confirm")}>
                         Confirm Vaccinated
                     </Menu.Item>
                     <Menu.Item key="logout" icon={<FaSignOutAlt />} onClick={handleLogout} danger>

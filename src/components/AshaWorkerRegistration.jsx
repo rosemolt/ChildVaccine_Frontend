@@ -56,10 +56,20 @@ const AshaWorkerRegistration = () => {
                         <Input placeholder="Enter your address" />
                     </Form.Item>
 
-                    <Form.Item name="phoneno" label="Phone Number" 
-                        rules={[{ required: true, pattern: /^[0-9]{10}$/, message: "Enter a valid 10-digit phone number" }]}> 
-                        <Input placeholder="Enter your phone number" />
+                    <Form.Item 
+                        name="phoneno" 
+                        label="Phone Number" 
+                        rules={[
+                            { 
+                                required: true, 
+                                pattern: /^\+?[1-9]\d{9,14}$/, 
+                                message: "Enter a valid phone number with country code (e.g., +919876543210)" 
+                            }
+                        ]}
+                    > 
+                        <Input placeholder="Enter your phone number (e.g., +919876543210)" />
                     </Form.Item>
+
 
                     <Form.Item name="ward" label="Ward" rules={[{ required: true, message: "Please enter your ward" }]}> 
                         <Input placeholder="Enter your ward" />

@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { Layout, Menu, Card, Typography } from "antd";
-import {
-    UserOutlined,
-    ScheduleOutlined,
-    MessageOutlined,
-    LogoutOutlined,
-    ProfileOutlined,
-    FileDoneOutlined,
-} from "@ant-design/icons";
+import {UserOutlined,FileSearchOutlined,CalendarPlusOutlined,MessageOutlined,MedicineBoxOutlined,CalendarOutlined,TeamOutlined,FileDoneOutlined,CheckSquareOutlined,UserSwitchOutlined,LogoutOutlined} from "@ant-design/icons";
 import AshaWorkerProfile from "./AshaWorkerProfile";
 import AshaEligibleChildren from "./AshaEligibleChildren";
 import AshaMessageForm from "./AshaMessageForm";
@@ -68,15 +61,15 @@ const AshaWorkerDashboard = () => {
                     onClick={({ key }) => setSelectedOption(key)}
                 >
                     <Menu.Item key="ashaprofile" icon={<UserOutlined />}>Profile</Menu.Item>
-                    <Menu.Item key="asha-eligible-children" icon={<ProfileOutlined />}>Pending Children</Menu.Item>
-                    <Menu.Item key="schedule" icon={<MessageOutlined />}>Schedule slot</Menu.Item>
+                    <Menu.Item key="asha-eligible-children" icon={<FileSearchOutlined />}>Pending Children</Menu.Item>
+                    <Menu.Item key="schedule" icon={<CalendarOutlined />}>Schedule slot</Menu.Item>
                     <Menu.Item key="asha-message" icon={<MessageOutlined />}>Send Message</Menu.Item>
-                    <Menu.Item key="asha-request" icon={<ScheduleOutlined />}>Request Supplement</Menu.Item>
-                    <Menu.Item key="asha-schedules" icon={<ScheduleOutlined />}>Schedules</Menu.Item>
-                    <Menu.Item key="asha-bookedchild" icon={<FileDoneOutlined />}>Booked Child</Menu.Item>
-                    <Menu.Item key="asha-completedchild" icon={<FileDoneOutlined />}>Update Records</Menu.Item>
-                    <Menu.Item key="asha-caregiverapproval" icon={<FileDoneOutlined />}>Caregivers</Menu.Item>
-                    <Menu.Item key="asha-assigncaregiver" icon={<FileDoneOutlined />}>Caregiver Request</Menu.Item>
+                    <Menu.Item key="asha-request" icon={<MedicineBoxOutlined />}>Request Supplement</Menu.Item>
+                    <Menu.Item key="asha-schedules" icon={<CalendarOutlined />}>Schedules</Menu.Item>
+                    <Menu.Item key="asha-bookedchild" icon={<TeamOutlined />}>Booked Child</Menu.Item>
+                    <Menu.Item key="asha-completedchild" icon={<CheckSquareOutlined />}>Update Records</Menu.Item>
+                    <Menu.Item key="asha-caregiverapproval" icon={<UserSwitchOutlined />}>Caregivers</Menu.Item>
+                    <Menu.Item key="asha-assigncaregiver" icon={<TeamOutlined />}>Caregiver Request</Menu.Item>
                     <Menu.Item key="logout" icon={<LogoutOutlined />}>
                         <a href="/">Logout</a>
                     </Menu.Item>
